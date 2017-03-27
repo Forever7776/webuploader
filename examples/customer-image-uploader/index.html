@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>WebUploader演示</title>
+    <link rel="stylesheet" type="text/css" href="../../css/webuploader.css"/>
+    <link rel="stylesheet" type="text/css" href="image_uploader.css"/>
+
+
+</head>
+<body>
+<div id="wrapper">
+    <div id="container">
+        <div id="uploader" data-name="src">
+        </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="./jquery.js"></script>
+<script type="text/javascript" src="../../dist/webuploader.js"></script>
+<script type="text/javascript" src="./image_uploader.js"></script>
+<script>
+
+    ImageUploader('#uploader','../../server/fileupload.php',1);
+
+
+</script>
+
+</body>
+</html>
