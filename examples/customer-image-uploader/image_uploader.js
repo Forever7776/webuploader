@@ -2,10 +2,10 @@
 
     ImageUploader =function (selector,url,fileNumLimit,defaultSrc) {
 
-            var $wrap = $(selector);
-            $wrap.append('<div class="queueList"></div>');
-            // 图片容器
-            var $queue = $( '<ul class="filelist"><li class="dndArea" style="border: 3px dashed #e6e6e6;height: 107px;width: 107px;background: url(./image/image.png) center  no-repeat;"><div class="filePicker" style=" width: 100%;height: 100%;"></div> </li></ul>' )
+        var $wrap = $(selector);
+        $wrap.append('<div class="queueList"></div>');
+        // 图片容器
+        var $queue = $( '<ul class="filelist"><li class="dndArea" style="border: 3px dashed #e6e6e6;height: 107px;width: 107px;background: url(./image/image.png) center  no-repeat;"><div class="filePicker" style=" width: 100%;height: 100%;"></div> </li></ul>' )
                 .appendTo( $wrap.find( '.queueList' )),
             // 没选择文件之前的内容。
             $placeHolder = $wrap.find( '.dndArea' ),
@@ -229,7 +229,8 @@
 
                 }
             });
-            $li.prependTo( $queue );
+            // $li.prependTo( $queue );
+            $placeHolder.before($li);
         }
 
         // 负责view的销毁
@@ -354,15 +355,25 @@
 
 
         if(defaultSrc){
-            defaultImage();
+
+            if($.isArray(defaultSrc)){
+
+                $.each(defaultSrc,function (index,$item) {
+                    defaultImage($item,index);
+                })
+            }else{
+                defaultImage(defaultSrc,0);
+            }
         }
-        function defaultImage()
+        function defaultImage(src,index)
         {
-            var $li = $( '<li id="' + 'DEFAULT_IMAGE' + '0' + '">' +
-                    '<p class="imgWrap"><img src="'+defaultSrc+'"/></p>'+
+
+            var $li = $( '<li id="' + 'DEFAULT_IMAGE' + index + '">' +
+                    '<p class="imgWrap"><img src="'+src+'"/></p>'+
                     '</li>' ),
                 $btns = $('<div class="file-panel">' +
                     '<span class="cancel">删除</span></div>').appendTo( $li );
+            $li.append( '<span class="success"><input type="hidden" name="'+$(selector).data('name')+'" value="'+src+'"/></span>' );
             $li.on( 'mouseenter', function() {
                 $btns.stop().animate({height: 30});
             });
@@ -376,7 +387,8 @@
                     $placeHolder.removeClass( 'element-invisible' );
                 }
             });
-            $li.prependTo( $queue );
+            // $li.prependTo( $queue );
+            $placeHolder.before($li);
             fileCount++;
             setState('ready');
         }
